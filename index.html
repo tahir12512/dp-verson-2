@@ -3,138 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal AI - Pro</title>
+    <title>Unity AI — The future of building happens together</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        body { background: #1e1b4b; color: white; font-family: sans-serif; height: 100vh; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .chat-area::-webkit-scrollbar { width: 5px; }
-        .chat-area::-webkit-scrollbar-thumb { background: #312e81; border-radius: 10px; }
-        dialog::backdrop { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #0d1117; color: white; overflow-x: hidden; }
+        
+        .hero-gradient {
+            background: radial-gradient(circle at 50% -20%, #3245ff 0%, #bc45ff 35%, #0d1117 70%);
+            min-height: 100vh;
+        }
+
+        .glass-nav { background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(10px); }
+        .input-box { background: #f6f8fa; color: #1f2328; }
+        .chat-container::-webkit-scrollbar { width: 4px; }
+        .chat-container::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-hero { animation: fadeInUp 0.8s ease-out forwards; }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center p-2 md:p-4">
+<body>
 
-    <!-- Auth Section -->
-    <div id="auth-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950">
-        <div class="glass w-full max-w-sm p-10 rounded-[3rem] text-center border-white/20">
-            <h1 class="text-3xl font-black text-blue-500 mb-2">UNIVERSAL AI</h1>
-            <p class="text-slate-500 text-xs mb-8 uppercase tracking-widest">Secure Chat Interface</p>
-            <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold hover:bg-blue-500 shadow-lg transition-all">Launch System</button>
+    <!-- Header / Nav -->
+    <nav class="fixed top-0 w-full z-50 py-4 px-6 flex items-center justify-between glass-nav">
+        <div class="flex items-center gap-8">
+            <div class="text-2xl font-bold tracking-tighter">Unity AI</div>
+            <div class="hidden lg:flex gap-6 text-sm font-medium text-slate-300">
+                <span>Solutions ▾</span>
+                <span>Resources ▾</span>
+                <span>Open Source ▾</span>
+                <span>Pricing</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="text-sm font-medium">Sign in</button>
+            <button class="border border-white/30 px-3 py-1.5 rounded-md text-sm font-medium hover:border-white">Sign up</button>
+        </div>
+    </nav>
+
+    <!-- Login/Landing Page Section -->
+    <div id="auth-screen" class="hero-gradient flex flex-col items-center justify-center text-center px-4 pt-20">
+        <div class="max-w-4xl animate-hero">
+            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tight mb-6 leading-tight">
+                The future of building <br> happens together
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+                Tools and trends evolve, but collaboration endures. With Unity AI, developers, agents, and code come together on one platform.
+            </p>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-2xl mx-auto">
+                <div class="flex w-full md:w-auto bg-white rounded-l-md md:rounded-l-lg overflow-hidden flex-1">
+                    <input type="text" id="user-name" placeholder="Enter your name" class="w-full p-4 text-black outline-none h-14">
+                </div>
+                <button onclick="login()" class="w-full md:w-auto bg-[#2ea44f] hover:bg-[#2c974b] text-white font-bold h-14 px-8 rounded-md md:rounded-r-lg transition-all">
+                    Sign up for Unity AI
+                </button>
+                <button onclick="document.getElementById('set-modal').showModal()" class="w-full md:w-auto border border-white/30 hover:border-white/60 h-14 px-8 rounded-md font-bold transition-all">
+                    Try Unity Copilot
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bottom Floating Graphic (Optional) -->
+        <div class="mt-20 opacity-50 animate-bounce cursor-pointer" onclick="window.scrollTo({top: 500, behavior: 'smooth'})">
+            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </div>
     </div>
 
-    <!-- Main App Layout -->
-    <div id="app" class="hidden w-full h-full flex gap-4">
-        
+    <!-- Main Chat Dashboard -->
+    <div id="app" class="hidden fixed inset-0 z-[100] bg-[#0d1117] flex flex-col lg:flex-row p-4 gap-4">
         <!-- Sidebar -->
-        <aside class="w-72 glass rounded-[2.5rem] flex flex-col hidden lg:flex overflow-hidden">
-            <div class="p-6 border-b border-white/5">
-                <button onclick="location.reload()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold shadow-xl active:scale-95 transition-all">+ New Chat</button>
+        <aside class="w-72 bg-[#161b22] border border-[#30363d] rounded-2xl flex flex-col hidden lg:flex">
+            <div class="p-6">
+                <button onclick="location.reload()" class="w-full bg-[#238636] p-3 rounded-lg font-bold text-sm hover:bg-[#2ea043]">+ New Session</button>
             </div>
-            
-            <!-- History/Info Space -->
-            <div class="flex-1 p-6 space-y-4">
-                <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                    <p class="text-[10px] text-blue-400 font-bold uppercase mb-1">Active Model</p>
-                    <p id="active-model-display" class="text-xs text-slate-300 truncate">openai/gpt-oss-120b:free</p>
-                </div>
+            <div class="flex-1 px-4 space-y-2">
+                <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest px-2">Settings</div>
+                <button onclick="document.getElementById('set-modal').showModal()" class="w-full text-left p-3 hover:bg-[#21262d] rounded-lg text-sm text-slate-300">⚙️ API Configuration</button>
             </div>
-
-            <!-- Sidebar Bottom (Settings & Logout) -->
-            <div class="p-6 border-t border-white/10 space-y-2">
-                <button onclick="document.getElementById('set-modal').showModal()" class="w-full flex items-center gap-3 p-3 text-slate-300 hover:bg-white/5 rounded-xl transition-all">
-                    <span>⚙️</span> <span class="text-sm font-medium">Settings</span>
-                </button>
-                <button onclick="location.reload()" class="w-full flex items-center gap-3 p-3 text-slate-500 hover:bg-rose-500/10 hover:text-rose-400 rounded-xl transition-all">
-                    <span>🚪</span> <span class="text-sm font-medium">Logout</span>
-                </button>
+            <div class="p-6 border-t border-[#30363d]">
+                <button onclick="location.reload()" class="w-full text-slate-500 text-xs hover:text-white">Sign Out</button>
             </div>
         </aside>
 
-        <!-- Chat Container -->
-        <main class="flex-1 glass rounded-[3rem] flex flex-col overflow-hidden shadow-2xl">
-            <header class="h-16 flex items-center px-10 border-b border-white/5 justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Server: Online</span>
-                </div>
+        <!-- Chat Main Area -->
+        <main class="flex-1 bg-[#161b22] border border-[#30363d] rounded-2xl flex flex-col overflow-hidden">
+            <header class="h-14 border-b border-[#30363d] flex items-center px-6 justify-between">
+                <span class="text-xs font-bold text-blue-400" id="current-user"></span>
+                <span class="text-[10px] text-slate-500">Unity AI Engine v2.6</span>
             </header>
+            
+            <div id="chat-box" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container"></div>
 
-            <div id="chat-box" class="flex-1 overflow-y-auto p-8 space-y-6 chat-area"></div>
-
-            <!-- Input Area -->
-            <div class="p-8 bg-gradient-to-t from-slate-900/50 to-transparent">
-                <div class="max-w-4xl mx-auto flex items-center bg-slate-900/80 rounded-[2rem] border border-white/10 p-2 focus-within:border-blue-500/50 transition-all shadow-2xl">
-                    <input id="chat-in" type="text" placeholder="Send a message..." class="flex-1 p-4 bg-transparent outline-none text-white" onkeydown="if(event.key==='Enter') send()">
-                    <button onclick="send()" class="bg-blue-600 p-4 rounded-2xl hover:bg-blue-500 active:scale-90 transition-all">🚀</button>
+            <div class="p-6 bg-[#0d1117]/50">
+                <div class="max-w-4xl mx-auto flex gap-3 bg-[#0d1117] border border-[#30363d] rounded-xl p-2">
+                    <input id="chat-in" type="text" placeholder="How can Unity AI help you today?" class="flex-1 p-3 bg-transparent outline-none text-sm" onkeydown="if(event.key==='Enter') send()">
+                    <button onclick="send()" class="bg-[#238636] px-5 py-2 rounded-lg font-bold text-sm">Send</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Full Settings Modal (Matches Screenshot 2026-05-03 163731_3.jpg) -->
-    <dialog id="set-modal" class="bg-transparent m-auto p-4 w-full max-w-md">
-        <div class="glass p-10 rounded-[3rem] shadow-2xl border border-white/20">
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">⚙️ Settings</h2>
-            
-            <div class="space-y-5">
+    <!-- Settings Modal -->
+    <dialog id="set-modal" class="bg-transparent m-auto p-4 w-full max-w-sm">
+        <div class="bg-[#161b22] border border-[#30363d] p-8 rounded-2xl shadow-2xl">
+            <h2 class="text-xl font-bold mb-6">Unity AI Config</h2>
+            <div class="space-y-4 text-sm">
                 <div>
-                    <label class="text-[11px] text-slate-500 font-bold uppercase ml-1">OpenRouter API Key</label>
-                    <input type="password" id="api-key-input" placeholder="sk-or-v1-..." class="w-full mt-1 p-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-blue-500 text-white text-sm">
+                    <label class="text-slate-500 block mb-1">OpenRouter Key</label>
+                    <input type="password" id="api-key" class="w-full p-3 rounded-lg bg-[#0d1117] border border-[#30363d] outline-none">
                 </div>
-                
                 <div>
-                    <label class="text-[11px] text-slate-500 font-bold uppercase ml-1">Model ID</label>
-                    <input type="text" id="model-id-input" class="w-full mt-1 p-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-blue-500 text-white text-sm">
-                    <p class="text-[9px] text-slate-600 mt-1 ml-1">Default: openai/gpt-oss-120b:free</p>
+                    <label class="text-slate-500 block mb-1">Model Name</label>
+                    <input type="text" id="model-name" class="w-full p-3 rounded-lg bg-[#0d1117] border border-[#30363d] outline-none">
                 </div>
-
-                <div>
-                    <label class="text-[11px] text-slate-500 font-bold uppercase ml-1">System Prompt</label>
-                    <textarea id="system-prompt" class="w-full mt-1 p-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-blue-500 text-white text-sm h-24 resize-none" placeholder="You are a helpful AI assistant."></textarea>
-                </div>
-
-                <button onclick="saveSettings()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold text-sm shadow-lg hover:bg-blue-500 transition-all">Save Changes</button>
+                <button onclick="saveSettings()" class="w-full bg-[#238636] p-3 rounded-lg font-bold mt-2">Save Settings</button>
             </div>
-            
-            <button onclick="document.getElementById('set-modal').close()" class="w-full mt-4 text-slate-500 text-[10px] font-black uppercase tracking-widest hover:text-white transition-all">Dismiss</button>
+            <button onclick="document.getElementById('set-modal').close()" class="w-full mt-4 text-xs text-slate-500 uppercase">Close</button>
         </div>
     </dialog>
 
     <script>
-        // Load configurations
         let config = {
-            key: localStorage.getItem('ai_key') || "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",
-            model: localStorage.getItem('ai_model') || "openai/gpt-oss-120b:free",
-            system: localStorage.getItem('ai_system') || "You are a helpful AI assistant."
+            key: localStorage.getItem('u_key') || "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",
+            model: localStorage.getItem('u_model') || "openai/gpt-oss-120b:free"
         };
-
         let history = [];
 
         function login() {
-            document.getElementById('auth-screen').style.display = 'none';
+            const name = document.getElementById('user-name').value;
+            if(!name) return alert("Please enter your name");
+            document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app').classList.remove('hidden');
-            
-            // Sync values to UI
-            document.getElementById('api-key-input').value = config.key;
-            document.getElementById('model-id-input').value = config.model;
-            document.getElementById('system-prompt').value = config.system;
-            document.getElementById('active-model-display').textContent = config.model;
+            document.getElementById('current-user').textContent = "DEVELOPOER / " + name.toUpperCase();
+            document.getElementById('api-key').value = config.key;
+            document.getElementById('model-name').value = config.model;
         }
 
         function saveSettings() {
-            config.key = document.getElementById('api-key-input').value.trim();
-            config.model = document.getElementById('model-id-input').value.trim() || "openai/gpt-oss-120b:free";
-            config.system = document.getElementById('system-prompt').value.trim();
-
-            localStorage.setItem('ai_key', config.key);
-            localStorage.setItem('ai_model', config.model);
-            localStorage.setItem('ai_system', config.system);
-
-            document.getElementById('active-model-display').textContent = config.model;
-            alert("Configuration Saved!");
+            config.key = document.getElementById('api-key').value;
+            config.model = document.getElementById('model-name').value;
+            localStorage.setItem('u_key', config.key);
+            localStorage.setItem('u_model', config.model);
+            alert("Unity AI settings updated!");
             document.getElementById('set-modal').close();
         }
 
@@ -144,11 +160,12 @@
             const text = input.value.trim();
             if(!text) return;
 
-            if(history.length === 0) history.push({role: "system", content: config.system});
-
-            history.push({role: "user", content: text});
-            box.innerHTML += `<div class="flex justify-end animate-in slide-in-from-right-4 duration-300"><div class="bg-blue-600 p-4 rounded-3xl rounded-tr-none max-w-[80%] shadow-xl">${text}</div></div>`;
+            box.innerHTML += `<div class="flex justify-end"><div class="bg-[#1f6feb] p-4 rounded-xl rounded-tr-none max-w-[80%] text-sm">${text}</div></div>`;
             input.value = "";
+            box.scrollTop = box.scrollHeight;
+
+            const aiId = 'u-' + Date.now();
+            box.innerHTML += `<div class="flex justify-start"><div id="${aiId}" class="bg-[#21262d] border border-[#30363d] p-4 rounded-xl rounded-tl-none max-w-[85%] text-sm">Unity AI is thinking...</div></div>`;
             box.scrollTop = box.scrollHeight;
 
             try {
@@ -157,24 +174,39 @@
                     headers: {
                         "Authorization": `Bearer ${config.key}`,
                         "HTTP-Referer": "https://unitynodes.dpdns.org",
-                        "X-Title": "Universal AI Pro",
+                        "X-Title": "Unity AI",
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ model: config.model, messages: history })
+                    body: JSON.stringify({ model: config.model, messages: [...history, {role: "user", content: text}] })
                 });
 
                 const data = await res.json();
+                const aiDiv = document.getElementById(aiId);
+                
                 if (data.choices) {
                     const reply = data.choices[0].message.content;
-                    history.push({role: "assistant", content: reply});
-                    box.innerHTML += `<div class="flex justify-start animate-in slide-in-from-left-4 duration-300"><div class="glass p-5 rounded-3xl rounded-tl-none max-w-[85%] border border-white/5 shadow-2xl">${marked.parse(reply)}</div></div>`;
+                    history.push({role: "user", content: text}, {role: "assistant", content: reply});
+                    
+                    // Fast Typing Simulation
+                    aiDiv.innerHTML = "";
+                    let idx = 0;
+                    function type() {
+                        if (idx < reply.length) {
+                            aiDiv.innerHTML = marked.parse(reply.substring(0, idx + 8));
+                            idx += 8;
+                            box.scrollTop = box.scrollHeight;
+                            setTimeout(type, 1);
+                        } else {
+                            aiDiv.innerHTML = marked.parse(reply);
+                        }
+                    }
+                    type();
                 } else {
-                    box.innerHTML += `<div class="text-rose-500 text-[10px] text-center font-bold">⚠️ ${data.error?.message || "Check API Key"}</div>`;
+                    aiDiv.innerHTML = "⚠️ API Error: " + (data.error?.message || "Check settings.");
                 }
             } catch (e) {
-                box.innerHTML += `<div class="text-rose-500 text-[10px] text-center">❌ Network Failure</div>`;
+                document.getElementById(aiId).innerHTML = "❌ Unity AI node disconnected.";
             }
-            box.scrollTop = box.scrollHeight;
         }
     </script>
 </body>
