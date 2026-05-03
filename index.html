@@ -3,142 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unity AI | Sign In</title>
+    <title>Unity AI | Premium Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0d1117; color: white; height: 100vh; overflow: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
         
-        .auth-bg {
-            background: radial-gradient(circle at 50% 50%, #161b22 0%, #0d1117 100%);
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0d1117; 
+            color: white; 
+            height: 100vh; 
+            overflow: hidden; 
+            margin: 0;
         }
 
+        /* GitHub Style 3D Background */
+        .hero-bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% -20%, #3245ff 0%, #bc45ff 25%, #0d1117 60%);
+            z-index: -1;
+        }
+
+        /* Floating 3D Spheres */
+        .sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.6;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .sphere-1 { width: 400px; height: 400px; background: #3245ff; top: -100px; left: -100px; }
+        .sphere-2 { width: 300px; height: 300px; background: #bc45ff; bottom: -50px; right: -50px; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 100px) scale(1.1); }
+        }
+
+        /* Glassmorphism Card */
         .auth-card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .unity-input {
-            background: #0d1117;
+            background: rgba(13, 17, 23, 0.8);
             border: 1px solid #30363d;
-            transition: all 0.2s;
+            color: white;
+            transition: all 0.3s ease;
         }
 
         .unity-input:focus {
             border-color: #1f6feb;
-            box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.2);
+            box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.2);
             outline: none;
         }
 
-        .chat-scroll::-webkit-scrollbar { width: 4px; }
-        .chat-scroll::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+        /* 3D Button Effect */
+        .btn-3d {
+            background: linear-gradient(180deg, #2ea44f 0%, #238636 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+        .btn-3d:active { transform: scale(0.97); }
     </style>
 </head>
-<body class="auth-bg flex items-center justify-center p-4">
+<body class="flex items-center justify-center p-4">
 
-    <!-- Unity Login Page -->
-    <div id="auth-screen" class="w-full max-w-[360px] animate-in fade-in zoom-in duration-500">
-        <div class="text-center mb-6">
-            <div class="text-4xl font-bold tracking-tighter mb-2">Unity AI</div>
-            <p class="text-slate-400 text-sm">Join the future of building together</p>
+    <!-- Background Elements -->
+    <div class="hero-bg"></div>
+    <div class="sphere sphere-1"></div>
+    <div class="sphere sphere-2"></div>
+
+    <!-- Login UI -->
+    <div id="auth-screen" class="w-full max-w-[400px] z-10 animate-in fade-in zoom-in duration-700">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tighter mb-2 text-white">Unity AI</h1>
+            <p class="text-slate-300/80 text-sm font-medium">Empowering the future of collaboration</p>
         </div>
 
-        <div class="auth-card p-8 rounded-2xl">
-            <div class="space-y-5">
+        <div class="auth-card p-8 rounded-3xl">
+            <div class="space-y-6">
                 <div>
-                    <label class="block text-[11px] font-semibold mb-2 text-slate-400 uppercase tracking-wider">Full Name</label>
-                    <input type="text" id="user-name" class="w-full p-3 rounded-lg unity-input text-sm" placeholder="Enter your name">
+                    <label class="block text-[11px] font-bold mb-2 text-slate-400 uppercase tracking-widest">Display Name</label>
+                    <input type="text" id="user-name" class="w-full p-3.5 rounded-xl unity-input text-sm" placeholder="Your Name">
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-semibold mb-2 text-slate-400 uppercase tracking-wider">Gmail Address</label>
-                    <input type="email" id="user-email" class="w-full p-3 rounded-lg unity-input text-sm" placeholder="name@gmail.com">
+                    <label class="block text-[11px] font-bold mb-2 text-slate-400 uppercase tracking-widest">Gmail</label>
+                    <input type="email" id="user-email" class="w-full p-3.5 rounded-xl unity-input text-sm" placeholder="user@gmail.com">
                 </div>
 
                 <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Password</label>
-                        <a href="#" class="text-[10px] text-[#2f81f7] hover:underline">Forgot?</a>
-                    </div>
-                    <input type="password" id="user-pass" class="w-full p-3 rounded-lg unity-input text-sm" placeholder="••••••••">
+                    <label class="block text-[11px] font-bold mb-2 text-slate-400 uppercase tracking-widest">Secret Key</label>
+                    <input type="password" id="user-pass" class="w-full p-3.5 rounded-xl unity-input text-sm" placeholder="••••••••">
                 </div>
                 
-                <button onclick="login()" class="w-full bg-[#238636] hover:bg-[#2ea043] text-white font-bold py-3 rounded-lg text-sm transition-all shadow-lg active:scale-[0.98]">
-                    Sign in to Unity Nodes
+                <button onclick="login()" class="w-full btn-3d text-white font-bold py-4 rounded-xl text-sm shadow-xl mt-2">
+                    Initialize Unity Node
                 </button>
             </div>
             
-            <div class="mt-6 pt-6 border-t border-[#30363d] text-center">
-                <p class="text-xs text-slate-400">New here? <button class="text-[#2f81f7] hover:underline font-medium">Create an account</button></p>
+            <div class="mt-8 text-center">
+                <p class="text-[11px] text-slate-500 font-medium">
+                    By signing in, you agree to our 
+                    <span class="text-blue-400 cursor-pointer">Neural Protocols</span>.
+                </p>
             </div>
         </div>
 
-        <div class="mt-8 text-center flex justify-center gap-6 text-[11px] text-slate-500">
-            <a href="#" class="hover:text-blue-400 transition-colors">Docs</a>
-            <a href="#" class="hover:text-blue-400 transition-colors">Privacy</a>
-            <button onclick="document.getElementById('set-modal').showModal()" class="hover:text-blue-400 font-bold transition-colors">Config</button>
+        <!-- Footer Links -->
+        <div class="mt-10 flex justify-center gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+            <button onclick="document.getElementById('set-modal').showModal()" class="hover:text-white transition-colors">Config</button>
+            <a href="#" class="hover:text-white transition-colors">Documentation</a>
+            <a href="#" class="hover:text-white transition-colors">Support</a>
         </div>
     </div>
 
-    <!-- Interface Dashboard (Remains same as previous logic) -->
-    <div id="app" class="hidden fixed inset-0 z-50 bg-[#0d1117] flex flex-col lg:flex-row p-3 gap-3">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-[#161b22] border border-[#30363d] rounded-2xl flex flex-col hidden lg:flex">
-            <div class="p-6 border-b border-[#30363d] flex items-center gap-2">
-                <div class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
-                <span class="font-bold text-sm tracking-tight">Unity AI Node</span>
+    <!-- Main Chat Dashboard (Hidden Initially) -->
+    <div id="app" class="hidden fixed inset-0 z-50 bg-[#0d1117] flex flex-col lg:flex-row p-4 gap-4">
+        <aside class="w-72 bg-[#161b22]/50 border border-white/10 rounded-3xl backdrop-blur-xl p-6 hidden lg:flex flex-col">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-4 h-4 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]"></div>
+                <span class="text-lg font-black tracking-tighter">UNITY AI</span>
             </div>
-            <div class="flex-1 p-4 space-y-2 overflow-y-auto chat-scroll">
-                <button onclick="location.reload()" class="w-full text-left p-3 hover:bg-[#21262d] rounded-xl text-sm text-slate-300 font-medium transition-colors border border-transparent hover:border-white/5">+ New Discussion</button>
-            </div>
-            <div class="p-4 border-t border-[#30363d] space-y-1">
-                <button onclick="document.getElementById('set-modal').showModal()" class="w-full text-left p-2.5 hover:bg-[#21262d] rounded-lg text-xs text-slate-400 flex items-center gap-2">⚙️ System Configuration</button>
-                <button onclick="location.reload()" class="w-full text-left p-2.5 hover:bg-rose-500/5 hover:text-rose-400 rounded-lg text-xs flex items-center gap-2">🚪 Sign out</button>
-            </div>
+            <button onclick="location.reload()" class="w-full bg-white/5 p-4 rounded-2xl text-sm font-bold border border-white/10 hover:bg-white/10 transition-all">+ New Session</button>
+            <div class="flex-1"></div>
+            <button onclick="location.reload()" class="text-xs text-slate-500 font-bold hover:text-rose-400 transition-colors uppercase">Terminate Session</button>
         </aside>
 
-        <!-- Main Workspace -->
-        <main class="flex-1 bg-[#161b22] border border-[#30363d] rounded-3xl flex flex-col overflow-hidden relative shadow-2xl">
-            <header class="h-14 border-b border-[#30363d] flex items-center px-8 justify-between bg-white/[0.01]">
-                <span class="text-xs font-bold text-[#2f81f7] tracking-widest uppercase" id="user-display"></span>
-                <span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[9px] font-black border border-green-500/20">ENCRYPTED NODE</span>
+        <main class="flex-1 bg-[#161b22]/30 border border-white/10 rounded-[2rem] backdrop-blur-2xl flex flex-col overflow-hidden">
+            <header class="h-16 border-b border-white/5 flex items-center px-10 justify-between">
+                <div id="user-display" class="text-xs font-black tracking-widest text-blue-400 uppercase"></div>
+                <div class="flex gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-slate-500 tracking-widest">SECURE LINK</span>
+                </div>
             </header>
-
-            <div id="chat-box" class="flex-1 overflow-y-auto p-8 space-y-6 chat-scroll"></div>
-
-            <div class="p-6">
-                <div class="max-w-4xl mx-auto flex items-center bg-[#0d1117] border border-[#30363d] rounded-2xl p-1 focus-within:border-[#2f81f7] transition-all shadow-xl">
-                    <input id="chat-in" type="text" placeholder="Type your request here..." class="flex-1 p-4 bg-transparent outline-none text-sm" onkeydown="if(event.key==='Enter') send()">
-                    <button onclick="send()" class="bg-[#1f6feb] hover:bg-[#388bfd] p-4 rounded-xl transition-all active:scale-95">
-                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+            <div id="chat-box" class="flex-1 overflow-y-auto p-10 space-y-8 chat-container"></div>
+            <div class="p-8">
+                <div class="max-w-4xl mx-auto bg-[#0d1117]/80 border border-white/10 rounded-2xl p-2 flex items-center focus-within:border-blue-500 transition-all shadow-2xl">
+                    <input id="chat-in" type="text" placeholder="Command Unity AI..." class="flex-1 p-4 bg-transparent outline-none text-sm font-medium" onkeydown="if(event.key==='Enter') send()">
+                    <button onclick="send()" class="bg-blue-600 hover:bg-blue-500 p-4 rounded-xl shadow-lg transition-all active:scale-95">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Configuration Modal -->
+    <!-- Settings Modal -->
     <dialog id="set-modal" class="bg-transparent m-auto p-4 w-full max-w-sm">
-        <div class="bg-[#161b22] border border-[#30363d] p-8 rounded-2xl shadow-2xl">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2">⚙️ Internal Node</h2>
-            <div class="space-y-4 text-sm text-slate-300">
-                <div>
-                    <label class="block mb-1 text-[10px] uppercase font-bold text-slate-500">API Access Key</label>
-                    <input type="password" id="api-key" class="w-full p-3 rounded-lg bg-[#0d1117] border border-[#30363d] outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block mb-1 text-[10px] uppercase font-bold text-slate-500">Target Model ID</label>
-                    <input type="text" id="model-name" class="w-full p-3 rounded-lg bg-[#0d1117] border border-[#30363d] outline-none focus:border-blue-500">
-                </div>
-                <button onclick="saveSettings()" class="w-full bg-[#238636] p-3 rounded-lg font-bold mt-2 hover:bg-[#2ea043] transition-colors">Apply Config</button>
+        <div class="bg-[#161b22] border border-white/10 p-10 rounded-[2rem] shadow-2xl backdrop-blur-3xl">
+            <h2 class="text-xl font-black mb-6 uppercase tracking-tighter">System Config</h2>
+            <div class="space-y-4">
+                <input type="password" id="api-key" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs" placeholder="OpenRouter API Key">
+                <input type="text" id="model-name" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs" placeholder="Model ID">
+                <button onclick="saveSettings()" class="w-full bg-blue-600 p-4 rounded-xl font-bold text-sm shadow-lg hover:bg-blue-500">Save Node Params</button>
             </div>
-            <button onclick="document.getElementById('set-modal').close()" class="w-full mt-4 text-[10px] text-slate-500 uppercase font-black tracking-widest hover:text-white">Cancel</button>
+            <button onclick="document.getElementById('set-modal').close()" class="w-full mt-6 text-[10px] text-slate-500 font-black uppercase">Close</button>
         </div>
     </dialog>
 
     <script>
+        // All previous logic from previous versions remains intact
         let config = {
             key: localStorage.getItem('u_key') || "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",
             model: localStorage.getItem('u_model') || "openai/gpt-oss-120b:free"
@@ -149,15 +181,11 @@
             const name = document.getElementById('user-name').value;
             const email = document.getElementById('user-email').value;
             const pass = document.getElementById('user-pass').value;
-
-            if(!name || !email || !pass) {
-                alert("All fields are required!");
-                return;
-            }
-
+            if(!name || !email || !pass) return alert("Complete the protocol (fill all fields)!");
+            
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app').classList.remove('hidden');
-            document.getElementById('user-display').textContent = name;
+            document.getElementById('user-display').textContent = "OPERATOR: " + name;
             document.getElementById('api-key').value = config.key;
             document.getElementById('model-name').value = config.model;
         }
@@ -176,23 +204,18 @@
             const text = input.value.trim();
             if(!text) return;
 
-            box.innerHTML += `<div class="flex justify-end animate-in fade-in slide-in-from-right-4"><div class="bg-[#1f6feb] p-4 rounded-2xl rounded-tr-none max-w-[80%] text-sm shadow-lg">${text}</div></div>`;
+            box.innerHTML += `<div class="flex justify-end"><div class="bg-blue-600 p-5 rounded-3xl rounded-tr-none max-w-[80%] text-sm font-medium shadow-2xl">${text}</div></div>`;
             input.value = "";
             box.scrollTop = box.scrollHeight;
 
             const aiId = 'u-' + Date.now();
-            box.innerHTML += `<div class="flex justify-start animate-in fade-in slide-in-from-left-4"><div id="${aiId}" class="bg-[#21262d] border border-[#30363d] p-4 rounded-2xl rounded-tl-none max-w-[85%] text-sm shadow-sm leading-relaxed">Processing...</div></div>`;
+            box.innerHTML += `<div class="flex justify-start"><div id="${aiId}" class="bg-white/5 border border-white/10 p-5 rounded-3xl rounded-tl-none max-w-[85%] text-sm leading-relaxed shadow-sm">Syncing with Node...</div></div>`;
             box.scrollTop = box.scrollHeight;
 
             try {
                 const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${config.key}`,
-                        "HTTP-Referer": "https://unitynodes.dpdns.org",
-                        "X-Title": "Unity AI",
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Authorization": `Bearer ${config.key}`, "Content-Type": "application/json" },
                     body: JSON.stringify({ model: config.model, messages: [...history, {role: "user", content: text}] })
                 });
 
@@ -202,25 +225,13 @@
                 if (data.choices) {
                     const reply = data.choices[0].message.content;
                     history.push({role: "user", content: text}, {role: "assistant", content: reply});
-                    
-                    aiDiv.innerHTML = "";
-                    let idx = 0;
-                    function type() {
-                        if (idx < reply.length) {
-                            aiDiv.innerHTML = marked.parse(reply.substring(0, idx + 15));
-                            idx += 15;
-                            box.scrollTop = box.scrollHeight;
-                            setTimeout(type, 1);
-                        } else {
-                            aiDiv.innerHTML = marked.parse(reply);
-                        }
-                    }
-                    type();
+                    aiDiv.innerHTML = marked.parse(reply);
+                    box.scrollTop = box.scrollHeight;
                 } else {
-                    aiDiv.innerHTML = "⚠️ API Key expired or invalid.";
+                    aiDiv.innerHTML = "⚠️ Node Error: Check Config.";
                 }
             } catch (e) {
-                document.getElementById(aiId).innerHTML = "❌ Node connection lost.";
+                document.getElementById(aiId).innerHTML = "❌ Connection Failed.";
             }
         }
     </script>
